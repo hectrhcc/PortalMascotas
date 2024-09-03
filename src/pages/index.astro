@@ -1,6 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import { Image } from 'astro:assets';
+import rrss1 from '../images/rrss1.svg'
+import rrss2 from '../images/rrss2.svg'
+import rrss3 from '../images/rrss3.svg'
 ---
 
 <Layout title="Welcome to Astro.">
@@ -62,12 +66,28 @@ import Card from '../components/Card.astro';
 			/>
 			
 		</ul>
-		<article>
-		<h2>Últimos perritos adoptados</h2>
-		</article>
 	</main>
 	<footer>
-		Espacio dedicado para encontrar, regalar y adoptar a mascotas
+		<div class="texto">Espacio dedicado para encontrar, regalar y adoptar a mascotas.
+		<p class="correo">hola@mascotas.com</p>		
+			<div class="rrss">
+				<a href="https://www.instagram.com/aricamascotas/" class="social-media-icon">
+				<Image src={rrss1} alt="red social 1" />
+				</a>
+				<a href="https://www.tiktok.com/@aricamascotas/" class="social-media-icon">
+					<Image src={rrss2} alt="red social 2" />
+				</a>
+				<a href="https://web.whatsapp.com/" class="social-media-icon">
+					<Image src={rrss3} alt="red social 3" />
+				</a>
+			</div>
+		</div>
+		
+		<div class="otrolado">
+		<div class="rutas"> Buscar &#9702;  Encontrar &#9702; Dar en adopción &#9702; Adoptar</div>
+		<hr>
+			<div class="copyright">PortalMascotas Copyright 2024. Todos los derechos reservados.</div>
+		</div>
 	</footer>
 </Layout>
 
@@ -129,12 +149,7 @@ import Card from '../components/Card.astro';
 		gap: 2rem;
 		padding: 0;
 	}
-	article{
-		margin:1rem auto;
-		border:1px solid black;
-		height:14rem;
-		border-radius: 0.5rem;
-	}
+
 	h2{
 		text-align:center;
 		margin:1rem;
@@ -144,9 +159,35 @@ import Card from '../components/Card.astro';
 		display:flex;
 		flex-direction:row;
 		justify-content: center;
-		width:60%;
+		width:100%;
 		margin: 0 auto;
 		background-color: #9F8AD0;
-		height:12rem;
+		height:14rem;
+	}
+	.texto{
+		width: 35%;
+		margin:2rem;
+	}
+	.rrss{
+	display: flex;
+	flex-direction: row
+		
+	}
+	.otrolado{
+		margin:2rem;
+		width: 60%;
+	}
+	.correo {
+		text-decoration: underline;
+		font-size: large;
+		margin-top: 1rem;
+	}
+	.social-media-icon{
+		width:2rem;
+		margin-top: 1.5rem;
+		margin-right: 0.7rem;
+	}
+	.copyright{
+		margin-top:2.5rem;
 	}
 </style>
