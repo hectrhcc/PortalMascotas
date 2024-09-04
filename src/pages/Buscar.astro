@@ -1,12 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { initializeApp } from 'firebase/app';
+import MascotaForm from '../components/MascotaForm.jsx';
+//import { getDatabase, ref, set } from 'firebase/database';
+
+
+// Configura tu aplicación de Firebase con tus claves
+const firebaseConfig = {
+  apiKey: "AIzaSyAyDdP0QjxPDvcB9DdGju9Xl7ouGvjZ2hI",
+  authDomain: "mascotas-8fa86.firebaseapp.com",
+  projectId: "mascotas-8fa86",
+  storageBucket: "mascotas-8fa86.appspot.com",
+  messagingSenderId: "960763048480",
+  appId: "1:960763048480:web:3feda522a90efea1390245"
+};
+
+// Inicializa la aplicación de Firebase
+const app = initializeApp(firebaseConfig);
+//const database = getDatabase(app);
 ---
+
 
 <Layout title="PortalMascotas.">
 	<main>
 
 		<h1>Buscar <span class="text-gradient">Mascotas </span>🐶</h1>
-		
+		<MascotaForm client:load />	
 </main>
 </Layout>
 <style>
