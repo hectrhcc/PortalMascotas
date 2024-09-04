@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { getDatabase, ref, push } from 'firebase/database';
 import { initializeApp } from 'firebase/app';
-//import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref as dbRef, push, set } from 'firebase/database';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 
 // Configura tu aplicación de Firebase con tus claves
 const firebaseConfig = {
-  apiKey: "AIzaSyAyDdP0QjxPDvcB9DdGju9Xl7ouGvjZ2hI",
+  apiKey: "",
   authDomain: "mascotas-8fa86.firebaseapp.com",
   projectId: "mascotas-8fa86",
   storageBucket: "mascotas-8fa86.appspot.com",
@@ -17,6 +17,7 @@ const firebaseConfig = {
 // Inicializa la aplicación de Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);  
+const storage = getStorage(app);
 
 const MascotaForm = () => {
   const [formData, setFormData] = useState({
@@ -41,13 +42,15 @@ const MascotaForm = () => {
   };
 
   const handleFotografiaChange = (e) => {
-    setFotografia(e.target.files[0]);
+    if (e.target.files[0]) {
+      setFotografia(e.target.files[0]);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const database = getDatabase();
-    const mascotasRef = ref(database, 'mascotas');
+    setIsLoading(true);
+    setFeedbackMessage('');
 
     try {
       let fotografiaUrl = null;
@@ -135,10 +138,17 @@ const MascotaForm = () => {
     </div>
     
     <div className="flex items-center justify-between">
-      <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Enviar
+      <button type="submit"  className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+          disabled={isLoading}>
+        {isLoading ? 'Enviando...' : 'Enviar'}
       </button>
     </div>
+
+    {feedbackMessage && (
+        <div className={`mt-4 p-2 rounded ${feedbackMessage.includes('éxito') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+          {feedbackMessage}
+        </div>
+      )}
   </form>
   );
 };
