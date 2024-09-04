@@ -29,6 +29,8 @@ const MascotaForm = () => {
     descripcion: ''
   });
   const [fotografia, setFotografia] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,16 +50,21 @@ const MascotaForm = () => {
     const mascotasRef = ref(database, 'mascotas');
 
     try {
-      // Aquí deberías manejar la subida de la imagen a Firebase Storage
-      // y obtener la URL de la imagen subida
+      let fotografiaUrl = null;
+      if (fotografia) {
+        const fotografiaRef = storageRef(storage, `mascotas/${Date.now()}_${fotografia.name}`);
+        const uploadResult = await uploadBytes(fotografiaRef, fotografia);
+        fotografiaUrl = await getDownloadURL(uploadResult.ref);
+      }
 
+      const mascotasRef = dbRef(database, 'mascotas');
       const newMascotaRef = push(mascotasRef);
       await set(newMascotaRef, {
         ...formData,
-        // fotografiaUrl: URL_DE_LA_IMAGEN
+        fotografiaUrl
       });
 
-      alert('Mascota registrada con éxito!');
+      setFeedbackMessage('Mascota registrada con éxito!');
       // Limpiar el formulario
       setFormData({
         name: '',
@@ -71,7 +78,9 @@ const MascotaForm = () => {
       setFotografia(null);
     } catch (error) {
       console.error('Error al registrar la mascota:', error);
-      alert('Hubo un error al registrar la mascota. Por favor, intenta de nuevo.');
+      setFeedbackMessage('Hubo un error al registrar la mascota. Por favor, intenta de nuevo.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
